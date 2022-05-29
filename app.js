@@ -24,6 +24,4 @@ app.use('/cards', cardRouter);
   res.status(200).send({ message: 'ok' });
 }); */
 
-app.listen(PORT, () => {
-  console.log('Запущенно');
-});
+app.listen(PORT, () => {});

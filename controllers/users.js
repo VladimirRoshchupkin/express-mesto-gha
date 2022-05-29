@@ -47,10 +47,11 @@ const createUser = (req, res) => {
       }
       return res.status(500).send({ message: 'Server error' });
     });
+  return res.status(200);
 };
 
 const updateUserInfo = (req, res) => {
-  const { name, about} = req.body;
+  const { name, about } = req.body;
   const { _id: id } = req.user;
   if (!name || !about) {
     return res.status(400).send('missing user data');
@@ -66,10 +67,11 @@ const updateUserInfo = (req, res) => {
       }
       return res.status(500).send({ message: 'Server error' });
     });
+  return res.status(200);
 };
 
 const updateUserAvatar = (req, res) => {
-  const { avatar} = req.body;
+  const { avatar } = req.body;
   const { _id: id } = req.user;
   if (!avatar) {
     return res.status(400).send('missing user avatar');
@@ -85,6 +87,7 @@ const updateUserAvatar = (req, res) => {
       }
       return res.status(500).send({ message: 'Server error' });
     });
+  return res.status(200);
 };
 
 module.exports = {
