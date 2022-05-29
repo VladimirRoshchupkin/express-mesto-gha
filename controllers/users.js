@@ -29,9 +29,9 @@ const getUsers = (_, res) => {
 
 const createUser = (req, res) => {
   const { name, about, avatar } = req.body;
-  if (!name || !about || !avatar) {
+/*   if (!name || !about || !avatar) {
     return res.status(400).send('missing user data');
-  }
+  } */
 
   User.create({ name, about, avatar })
     .then((user) => {
