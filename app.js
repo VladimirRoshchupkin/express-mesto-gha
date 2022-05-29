@@ -2,8 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const { userRouter } = require('./routes/users');
+const { cardRouter } = require('./routes/cards');
 
-mongoose.connect('mongodb://localhost:27017/mestodb')
+mongoose.connect('mongodb://localhost:27017/mestodb');
 
 const app = express();
 const { PORT = 3000 } = process.env;
@@ -16,6 +17,7 @@ app.use((req, res, next) => { // res не меняю на _ т.к. это код
   next();
 });
 app.use('/users', userRouter);
+app.use('/cards', cardRouter);
 
 /* app.use('/', (req, res) => {
   console.log('слушаем слэш');
