@@ -39,8 +39,9 @@ const createUser = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        const fields = Object.keys(err.errors).join(', ');
-        return res.status(400).send({ message: `field(s): ${fields} - not correct` });
+        /* const fields = Object.keys(err.errors).join(', ');
+        return res.status(400).send({ message: `field(s): ${fields} - not correct` }); */
+        res.status(400).send({ message: 'missing user data' });
       }
       if (err.code === 11000) {
         return res.status(409).send({ message: 'User already exist' }); // на случай когда юзеры будут уникальными. взято из вебинара.
