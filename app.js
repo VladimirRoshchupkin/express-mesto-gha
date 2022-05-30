@@ -18,10 +18,6 @@ app.use((req, res, next) => { // res не меняю на _ т.к. это код
 });
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
-
-/* app.use('/', (req, res) => {
-  console.log('слушаем слэш');
-  res.status(200).send({ message: 'ok' });
-}); */
+app.use('/', (_, res) => res.status(404).send({ message: 'Page not found' }));
 
 app.listen(PORT, () => {});
