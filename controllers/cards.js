@@ -30,8 +30,10 @@ const deleteCard = (req, res) => {
   Card.deleteOne({ _id: id })
     .then((card) => {
       if (!card) {
-        return res.status(404).send({ message: 'card not found' }); // если мы единственные удаляем, то такого не будет в нормальном режиме? но на всякий случай. мало ли в соседнем окне браузера удалили, а в текущем не обновлено....... и на случай некорректного запроса.
+        console.log('!card')
+        return res.status(404).send({ message: 'card not found' });
       }
+      console.log('card')
       return res.status(200).send(card);
     })
     .catch((err) => {
