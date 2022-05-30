@@ -29,7 +29,6 @@ const createCard = (req, res) => {
       }
       return res.status(500).send({ message: 'Server error' });
     });
-  return res.status(200);
 };
 
 const deleteCard = (req, res) => {
