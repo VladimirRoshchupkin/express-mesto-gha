@@ -31,10 +31,8 @@ const deleteCard = (req, res) => {
   Card.findByIdAndRemove(id)
     .then((card) => {
       if (!card) {
-        console.log('!card')
         return res.status(404).send({ message: 'card not found' });
       }
-      console.log('card')
       return res.status(200).send(card);
     })
     .catch((err) => {
