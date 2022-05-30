@@ -13,9 +13,9 @@ const getCards = (_, res) => {
 const createCard = (req, res) => {
   const { name, link } = req.body; // owner пока в хардкоде
   const { _id: owner } = req.user;
-  if (!name || !link || !owner) { // но не будет лишним проверить владельца
+  /* if (!name || !link || !owner) { // но не будет лишним проверить владельца
     return res.status(400).send('missing card data');
-  }
+  } */
 
   Card.create({ name, link, owner })
     .then((card) => {
@@ -23,8 +23,9 @@ const createCard = (req, res) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        const fields = Object.keys(err.errors).join(', ');
-        return res.status(400).send({ message: `field(s): ${fields} - not correct` });
+        /* const fields = Object.keys(err.errors).join(', ');
+        return res.status(400).send({ message: `field(s): ${fields} - not correct` }); */
+        return res.status(400).send({ message: 'wrong card data' });
       }
       return res.status(500).send({ message: 'Server error' });
     });
