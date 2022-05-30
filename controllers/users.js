@@ -54,9 +54,9 @@ const createUser = (req, res) => {
 const updateUserInfo = (req, res) => {
   const { name, about } = req.body;
   const { _id: id } = req.user;
-  if (!name || !about) {
+  /*   if (!name || !about) {
     return res.status(400).send('missing user data');
-  }
+  } */
   User.findByIdAndUpdate(id, { name, about }, { new: true, runValidators: true, upsert: true })
     .then((user) => {
       res.status(200).send(user);
@@ -75,9 +75,9 @@ const updateUserInfo = (req, res) => {
 const updateUserAvatar = (req, res) => {
   const { avatar } = req.body;
   const { _id: id } = req.user;
-  if (!avatar) {
+  /* if (!avatar) {
     return res.status(400).send('missing user avatar');
-  }
+  } */
   User.findByIdAndUpdate(id, { avatar }, { new: true, runValidators: true, upsert: true })
     .then((user) => {
       res.status(200).send(user);
