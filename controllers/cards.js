@@ -13,18 +13,12 @@ const getCards = (_, res) => {
 const createCard = (req, res) => {
   const { name, link } = req.body; // owner пока в хардкоде
   const { _id: owner } = req.user;
-  /* if (!name || !link || !owner) { // но не будет лишним проверить владельца
-    return res.status(400).send('missing card data');
-  } */
-
   Card.create({ name, link, owner })
     .then((card) => {
       res.status(201).send(card);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        /* const fields = Object.keys(err.errors).join(', ');
-        return res.status(400).send({ message: `field(s): ${fields} - not correct` }); */
         return res.status(400).send({ message: 'wrong card data' });
       }
       return res.status(500).send({ message: 'Server error' });
@@ -33,7 +27,7 @@ const createCard = (req, res) => {
 
 const deleteCard = (req, res) => {
   const { cardId: id } = req.params;
-  Card.deleteOne(id)
+  Card.deleteOne({ _id: id })
     .then((card) => {
       if (!card) {
         return res.status(404).send({ message: 'card not found' }); // если мы единственные удаляем, то такого не будет в нормальном режиме? но на всякий случай. мало ли в соседнем окне браузера удалили, а в текущем не обновлено....... и на случай некорректного запроса.
@@ -44,6 +38,7 @@ const deleteCard = (req, res) => {
       if (err.kind === 'ObjectId') {
         return res.status(400).send({ message: 'Id is not correct' });
       }
+      console.log(err);
       return res.status(500).send({ message: 'Server error' });
     });
 };
