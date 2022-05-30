@@ -38,7 +38,6 @@ const deleteCard = (req, res) => {
       if (err.kind === 'ObjectId') {
         return res.status(400).send({ message: 'Id is not correct' });
       }
-      console.log(err);
       return res.status(500).send({ message: 'Server error' });
     });
 };
