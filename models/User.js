@@ -1,22 +1,36 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
 
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    // required: true,
     minlength: 2,
     maxlength: 30,
-    // unique: true, странно, что в задании не сказано про уникальность. либо есть какая-то задумка
+    default: 'Жак-Ив Кусто',
   },
   about: {
     type: String,
-    required: true,
+    // required: true,
     minlength: 2,
     maxlength: 30,
+    default: 'Исследователь',
   },
   avatar: {
     type: String,
+    // required: true,
+    default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
+  },
+  email: {
+    type: String,
+    unique: true,
     required: true,
+    validate: (email) => validator.isEmail(email),
+  },
+  password: {
+    type: String,
+    required: true,
+    select: false,
   },
 });
 

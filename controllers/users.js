@@ -1,4 +1,8 @@
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const { UnauthorizedError } = require('../errors/UnauthorizedError');
+
 const {
   notFoundError,
   serverError,
@@ -7,7 +11,7 @@ const {
 } = require('../errors/errorsStatus');
 
 const getUser = (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params || req.user;
   User.findById(id)
     .then((user) => {
       if (!user) {
@@ -23,19 +27,33 @@ const getUser = (req, res) => {
     });
 };
 
-const getUsers = (_, res) => {
+const getUsers = (_, res, next) => {
   User.find({})
     .then((users) => {
       res.status(200).send(users);
     })
-    .catch(() => {
+    .catch(next());
+/*     .catch(() => {
       res.status(serverError).send({ message: 'Server error' });
-    });
+    }); */
 };
 
 const createUser = (req, res) => {
-  const { name, about, avatar } = req.body;
-  User.create({ name, about, avatar })
+  const {
+    name,
+    about,
+    avatar,
+    email,
+    password,
+  } = req.body;
+  bcrypt.hash(password, 10)
+    .then((hash) => User.create({
+      name,
+      about,
+      avatar,
+      email,
+      password: hash,
+    }))
     .then((user) => {
       res.status(201).send(user);
     })
@@ -83,10 +101,38 @@ const updateUserAvatar = (req, res) => {
   return res.status(200);
 };
 
+const login = (req, res, next) => {
+  const { email, password } = req.body;
+  User.findone({ email }).select('+password')
+    .then((user) => {
+      if (!user) {
+        return Promise.reject(new UnauthorizedError('incorrect login or password'));
+      }
+      return bcrypt.compare(password, user.password)
+        .then((matched) => {
+          if (!matched) {
+            return Promise.reject(new UnauthorizedError('incorrect login or password'));
+          }
+          return user;
+          //
+        });
+    })
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, 'secret-key', { expiresIn: 3600 * 24 * 7 });
+      return token;
+    })
+    .then((token) => {
+      res.cookie('jwt', token, { maxAge: 1000 * 3600 * 24 * 7, httpOnly: true }).end();
+    })
+    .catch(next());
+};
+
 module.exports = {
   getUser,
   getUsers,
+  // getCurrentUser,
   createUser,
   updateUserInfo,
   updateUserAvatar,
+  login,
 };

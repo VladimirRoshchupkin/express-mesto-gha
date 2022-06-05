@@ -1,5 +1,6 @@
 const Card = require('../models/Card');
 const { notFoundError, serverError, validationError } = require('../errors/errorsStatus');
+const { ForbiddenError } = require('../errors/ForbiddenError');
 
 const getCards = (_, res) => {
   Card.find({})
@@ -32,6 +33,9 @@ const deleteCard = (req, res) => {
     .then((card) => {
       if (!card) {
         return res.status(notFoundError).send({ message: 'card not found' });
+      }
+      if (card.owner !== req.user._id) {
+        return Promise.reject(new ForbiddenError('you can only delete your own cards'));
       }
       return res.status(200).send(card);
     })
