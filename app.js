@@ -9,7 +9,12 @@ const { cardRouter } = require('./routes/cards');
 const { createUser, login } = require('./controllers/users');
 const { auth } = require('./middlewares/auth');
 
+// mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 mongoose.connect('mongodb://localhost:27017/mestodb');
+// mongoose.connect('mongodb://localhost:27017/mestodb', { family: 4 });
+// mongoose.connect('mongodb://127.0.0.1:27017/mestodb', { family: 4 });
+
+// console.log('12345');
 
 const app = express();
 const { PORT = 3000 } = process.env;
