@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 
+function avatarValidator(val) { // нашел здесь https://mongoosejs.com/docs/api.html#schematype_SchemaType-validate
+  const reqexp = /https?:\/\/(www\.)?[0-9a-z-.]*\.[a-z-.]{2,}([0-9a-z-._~:/?#[\]@!$&'()*+,;=])*#*$/i;
+  return reqexp.test(val);
+}
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -20,6 +25,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     // required: true,
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
+    validate: {
+      avatarValidator,
+      message: 'avatar URL validation error',
+    }, // все делают через npm-валидатор, я сделать по заданию, чувствую опять проблемы
   },
   email: {
     type: String,

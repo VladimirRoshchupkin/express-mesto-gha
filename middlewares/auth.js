@@ -10,7 +10,7 @@ const auth = (req, _, next) => {
   let payload;
 
   try {
-    payload = jwt.verify(token, 'secret-key');
+    payload = jwt.verify(token, 'secret-key'); // как в ПР15 вынесем ключ в .env сделаю его сложнее
   } catch (err) {
     return Promise.reject(new UnauthorizedError('authorization required'));
   }
