@@ -7,7 +7,7 @@ const { userRouter } = require('./routes/users');
 const { cardRouter } = require('./routes/cards');
 
 const { createUser, login } = require('./controllers/users');
-// const { auth } = require('./middlewares/auth');
+const { auth } = require('./middlewares/auth');
 
 // mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 mongoose.connect('mongodb://localhost:27017/mestodb');
@@ -41,7 +41,7 @@ app.post('/signup', celebrate({
     avatar: Joi.string().pattern(/https?:\/\/(www\.)?[0-9a-z-.]*\.[a-z-.]{2,}([0-9a-z-._~:/?#[\]@!$&'()*+,;=])*#*$/i),
   }),
 }), createUser);
-// app.use(auth);
+app.use(auth);
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
 app.use('/', (_, res) => res.status(404).send({ message: 'Page not found' }));
