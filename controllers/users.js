@@ -79,7 +79,7 @@ const createUser = (req, res, next) => {
       });
     })
     .catch((e) => {
-      console.log(e)
+      console.log(e);
       if (e.name === 'ValidationError') {
         // return res.status(validationError).send({ message: 'missing user data' });
         const err = new ValidationError('missing user data');
