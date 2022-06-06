@@ -23,7 +23,7 @@ const getUser = (req, res, next) => {
       if (!user) {
         // return res.status(notFoundError).send({ message: 'User not found' });
         throw new NotFoundError('User not found');
-      }
+      }// странно, я думал select: false избавляет от отправки пароля.
       return res.status(200).send(user);
     })
     .catch((e) => {
@@ -69,10 +69,17 @@ const createUser = (req, res, next) => {
       email,
       password: hash,
     }))
-    .then((user) => {
-      res.status(201).send(user);
+    .then((user) => { // что-то не выходит просто удалить поле password из объекта
+      res.status(201).send({
+        name: user.name,
+        about: user.about,
+        avatar: user.avatar,
+        email: user.email,
+        _id: user.id,
+      });
     })
     .catch((e) => {
+      console.log(e)
       if (e.name === 'ValidationError') {
         // return res.status(validationError).send({ message: 'missing user data' });
         const err = new ValidationError('missing user data');
