@@ -142,14 +142,14 @@ const login = (req, res, next) => {
     .then((user) => {
       if (!user) {
         // return Promise.reject(new UnauthorizedError('incorrect login or password'));
-        const err = new UnauthorizedError('incorrect login or password');
+        const err = new UnauthorizedError('incorrect login or password1');
         return next(err);
       }
       return bcrypt.compare(password, user.password)
         .then((matched) => {
           if (!matched) {
             // return Promise.reject(new UnauthorizedError('incorrect login or password'));
-            const err = new UnauthorizedError('incorrect login or password');
+            const err = new UnauthorizedError('incorrect login or password2');
             return next(err);
           }
           return user;
