@@ -139,17 +139,18 @@ const updateUserAvatar = (req, res, next) => {
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
-  User.findone({ email }).select('+password')
+  console.log('login-1', email, password);
+  User.findOne({ email }).select('+password')
     .then((user) => {
+      console.log('login-2', user);
       if (!user) {
-        // return Promise.reject(new UnauthorizedError('incorrect login or password'));
         const err = new UnauthorizedError('incorrect login or password1');
         return next(err);
       }
       return bcrypt.compare(password, user.password)
         .then((matched) => {
+          console.log('login-matched', matched);
           if (!matched) {
-            // return Promise.reject(new UnauthorizedError('incorrect login or password'));
             const err = new UnauthorizedError('incorrect login or password2');
             return next(err);
           }
@@ -158,13 +159,21 @@ const login = (req, res, next) => {
         });
     })
     .then((user) => {
+      console.log('login-token-user', user);
       const token = jwt.sign({ _id: user._id }, 'secret-key', { expiresIn: 3600 * 24 * 7 }); // как в ПР15 вынесем ключ в .env сделаю его сложнее
+      console.log('login-token', token);
       return token;
     })
     .then((token) => {
+      console.log('login-cookie', token);
       res.cookie('jwt', token, { maxAge: 1000 * 3600 * 24 * 7, httpOnly: true }).end();
     })
-    .catch(next());
+    .catch((err) => {
+      console.log('login-err', err);
+      next(err);
+      return '';
+    });
+// console.log('login-finish');
 };
 
 module.exports = {
