@@ -20,12 +20,12 @@ const app = express();
 const { PORT = 3000 } = process.env;
 app.use(helmet());
 app.use(express.json());
-/* app.use((req, res, next) => {
+app.use((req, res, next) => {
   req.user = {
-    _id: '6293ac2a172acb1f34a0ba32',
+    id: '6293ac2a172acb1f34a0ba32',
   };
   next();
-}); */
+});
 app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),

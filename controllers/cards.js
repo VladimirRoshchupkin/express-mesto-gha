@@ -16,21 +16,27 @@ const getCards = (_, res, next) => {
 };
 
 const createCard = (req, res, next) => {
+  console.log('createCard', req.user);
   const { name, link } = req.body; // owner пока в хардкоде
-  const { _id: owner } = req.user;
+  const { id: owner } = req.user; // _id==>id для ПР14
+  console.log('CreateCard1');
   Card.create({ name, link, owner })
     .then((card) => {
       res.status(201).send(card);
     })
     .catch((e) => {
+      console.log('CreateCard2');
       if (e.name === 'ValidationError') {
         // return res.status(validationError).send({ message: 'wrong card data' });
         const err = new ValidationError('wrong card data');
+        console.log(err);
         return next(err);
       }
       // return res.status(serverError).send({ message: 'Server error' });
+      console.log(e);
       return next(e);
     });
+  console.log('123456CreateCard');
 };
 
 const deleteCard = (req, res, next) => {
