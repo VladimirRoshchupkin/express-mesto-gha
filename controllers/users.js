@@ -16,8 +16,9 @@ const { ConflictError } = require('../errors/ConflictError');
 // } = require('../errors/errorsStatus');
 
 const getUser = (req, res, next) => {
-  // console.log('GetUser');
+  console.log('GetUser', req.params, req.user);
   const { id } = req.params || req.user;
+  console.log('id=', id);
   User.findById(id)
     .then((user) => {
       if (!user) {
