@@ -6,7 +6,9 @@ const auth = (req, _, next) => {
   const { authorization } = req.headers;
   if (!authorization || !authorization.startWith('Bearer')) {
     console.log('auth-01');
-    return Promise.reject(new UnauthorizedError('authorization required'));
+    // return Promise.reject(new UnauthorizedError('authorization required'));
+    const err = new UnauthorizedError('authorization required');
+    return next(err);
   }
   console.log('auth-2');
   const token = authorization.replace('Bearer', '');
@@ -14,9 +16,11 @@ const auth = (req, _, next) => {
   console.log('auth-3', token);
   try {
     payload = jwt.verify(token, 'secret-key'); // как в ПР15 вынесем ключ в .env сделаю его сложнее
-  } catch (err) {
-    console.log('auth-02', err);
-    return Promise.reject(new UnauthorizedError('authorization required'));
+  } catch (e) {
+    console.log('auth-02', e);
+    // return Promise.reject(new UnauthorizedError('authorization required'));
+    const err = new UnauthorizedError('authorization required');
+    return next(err);
   }
   console.log('auth-4');
   req.user = payload;
