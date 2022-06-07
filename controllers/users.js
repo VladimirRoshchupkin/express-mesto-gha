@@ -166,7 +166,7 @@ const login = (req, res, next) => {
     })
     .then((token) => {
       console.log('login-cookie', token);
-      res.cookie('jwt', token, { maxAge: 1000 * 3600 * 24 * 7, httpOnly: true }).end();
+      res.cookie('jwt', token, { maxAge: 1000 * 3600 * 24 * 7, httpOnly: true }).send({ message: '' });
     })
     .catch((err) => {
       console.log('login-err', err);
