@@ -3,8 +3,7 @@ const { celebrate, Joi } = require('celebrate');
 const {
   getUser,
   getUsers,
-  // getCurrentUser,
-  // createUser,
+  // getCurrentUser, getUser отлично справляется
   updateUserInfo,
   updateUserAvatar,
 } = require('../controllers/users');
@@ -30,7 +29,7 @@ router.patch('/me', celebrate({
 
 router.patch('/me/avatar', celebrate({
   body: Joi.object().keys({
-    avatar: Joi.string().pattern(/https?:\/\/(www\.)?[0-9a-z-.]*\.[a-z-.]{2,}([0-9a-z-._~:/?#[\]@!$&'()*+,;=])*#*$/i),
+    avatar: Joi.string().pattern(/https?:\/\/(www\.)?[0-9a-z-.]*\.[a-z-.]{2,}([0-9a-z-._~:/?#[\]@!$&'()*+,;=])*#*$/i), // нет в задание создать константу
   }),
 }), updateUserAvatar);
 
