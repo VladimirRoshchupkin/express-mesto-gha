@@ -18,7 +18,7 @@ const getCards = (_, res, next) => {
 const createCard = (req, res, next) => {
   console.log('createCard', req.user);
   const { name, link } = req.body; // owner пока в хардкоде
-  const { id: owner } = req.user; // _id==>id для ПР14
+  const { _id: owner } = req.user;
   console.log('CreateCard1');
   Card.create({ name, link, owner })
     .then((card) => {
@@ -27,6 +27,7 @@ const createCard = (req, res, next) => {
     .catch((e) => {
       console.log('CreateCard2');
       if (e.name === 'ValidationError') {
+        console.log(e);
         // return res.status(validationError).send({ message: 'wrong card data' });
         const err = new ValidationError('wrong card data');
         console.log(err);
