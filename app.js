@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { errors, celebrate, Joi } = require('celebrate');
 const helmet = require('helmet');
+const cookieParser = require('cookie-parser');
 
 const { userRouter } = require('./routes/users');
 const { cardRouter } = require('./routes/cards');
@@ -17,15 +18,16 @@ mongoose.connect('mongodb://localhost:27017/mestodb');
 console.log('12');
 
 const app = express();
+app.use(cookieParser());
 const { PORT = 3000 } = process.env;
 app.use(helmet());
 app.use(express.json());
-app.use((req, res, next) => {
+/* app.use((req, res, next) => {
   req.user = {
-    id: '6293ac2a172acb1f34a0ba32',
+    _id: '6293ac2a172acb1f34a0ba32',
   };
   next();
-});
+}); */
 app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),

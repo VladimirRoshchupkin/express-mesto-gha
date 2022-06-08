@@ -17,7 +17,8 @@ const { ConflictError } = require('../errors/ConflictError');
 
 const getUser = (req, res, next) => {
   console.log('GetUser', req.params, req.user);
-  const { id } = req.params || req.user;
+  // const { id } = req.params || req.user;
+  const id = req.params.id || req.user._id;
   console.log('id=', id);
   User.findById(id)
     .then((user) => {
@@ -166,7 +167,7 @@ const login = (req, res, next) => {
     })
     .then((token) => {
       console.log('login-cookie', token);
-      res.cookie('jwt', token, { maxAge: 1000 * 3600 * 24 * 7, httpOnly: true }).send({ message: '' });
+      res.cookie('jwt', token, { maxAge: 1000 * 3600 * 24 * 7, httpOnly: true }).send({ message: 'Касячный тест, куки не срабатывают без JSON-объекта' });
     })
     .catch((err) => {
       console.log('login-err', err);

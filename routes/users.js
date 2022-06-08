@@ -9,13 +9,13 @@ const {
   updateUserAvatar,
 } = require('../controllers/users');
 
+router.get('/me', getUser);
+
 router.get('/:id', celebrate({
   params: Joi.object().keys({
     id: Joi.string().alphanum().length(24), // 629e52cd44dcde9a53ba512f
   }),
 }), getUser);
-
-router.get('/me', getUser);
 
 router.get('/', getUsers);
 
