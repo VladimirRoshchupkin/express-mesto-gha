@@ -5,7 +5,7 @@ function avatarValidator(val) { // нашел здесь https://mongoosejs.com/
   const reg = /https?:\/\/(www\.)?[0-9a-z-.]*\.[a-z-.]{2,}([0-9a-z-._~:/?#[\]@!$&'()*+,;=])*#*$/i;
   return reg.test(val);
 }
-const custom = [avatarValidator, 'Uh oh, {PATH} does not equal "something".'];
+const avatarValidatorWithMessage = [avatarValidator, 'Uh oh, {PATH} does not equal "something".'];
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     // required: true,
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
-    validate: custom, // {
+    validate: avatarValidatorWithMessage, // {
     // avatarValidator,
     // message: 'avatar URL validation error',
     // }, // все делают через npm-валидатор, я сделать по заданию, чувствую опять проблемы
