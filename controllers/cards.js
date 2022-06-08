@@ -44,11 +44,13 @@ const deleteCard = (req, res, next) => {
   const { cardId: id } = req.params;
   Card.findByIdAndRemove(id)
     .then((card) => {
+      console.log('delete card card/id=', card, req.user._id);
       if (!card) {
         // return res.status(notFoundError).send({ message: 'card not found' });
         throw new NotFoundError('card not found');
       }
-      if (card.owner !== req.user._id) {
+      if (card.owner._id.toString() !== req.user._id) {
+        console.log('delete card owner/id=', card, req.user._id);
         // return Promise.reject(new ForbiddenError('you can only delete your own cards'));
         throw new ForbiddenError('you can only delete your own cards');
       }
