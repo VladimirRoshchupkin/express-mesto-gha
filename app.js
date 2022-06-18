@@ -46,7 +46,9 @@ app.use(auth);
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
 // app.use('/', (_, res) => res.status(404).send({ message: 'Page not found' }));
-app.use('/', (_, __) => { throw new NotFoundError('Page not found'); });
+app.use('/', () => {
+  throw new NotFoundError('Page not found');
+});
 app.use(errors());
 
 app.use((err, _req, res, next) => {
