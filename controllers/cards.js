@@ -40,7 +40,7 @@ const deleteCard = (req, res, next) => {
       }
       // только если карточка найдена и мы создатель - тогда удаляем.
       // по некорректному айди упадём сразу в catch и тоже отловим ошибку
-      return Card.remove()
+      return card.remove()
         .then(res.status(200).send(card));
       // return res.status(200).send(card);
     })
