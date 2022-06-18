@@ -29,7 +29,8 @@ const createCard = (req, res, next) => {
 
 const deleteCard = (req, res, next) => {
   const { cardId: id } = req.params;
-  Card.findByIdAndRemove(id)
+  // Card.findByIdAndRemove(id) Cделал не 100% по предлагаемому примеру, но вроде выходит аналогично
+  Card.findById(id) // только ищем, не удаляем
     .then((card) => {
       if (!card) {
         throw new NotFoundError('card not found');
@@ -37,7 +38,11 @@ const deleteCard = (req, res, next) => {
       if (card.owner._id.toString() !== req.user._id) {
         throw new ForbiddenError('you can only delete your own cards');
       }
-      return res.status(200).send(card);
+      // только если карточка найдена и мы создатель - тогда удаляем.
+      // по некорректному айди упадём сразу в catch и тоже отловим ошибку
+      return Card.remove()
+        .then(res.status(200).send(card));
+      // return res.status(200).send(card);
     })
     .catch((e) => {
       if (e.kind === 'ObjectId') {

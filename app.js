@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const { errors, celebrate, Joi } = require('celebrate');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
+const { NotFoundError } = require('./errors/NotFoundError');
 
 const { userRouter } = require('./routes/users');
 const { cardRouter } = require('./routes/cards');
@@ -44,8 +45,8 @@ app.post('/signup', celebrate({
 app.use(auth);
 app.use('/users', userRouter);
 app.use('/cards', cardRouter);
-app.use('/', (_, res) => res.status(404).send({ message: 'Page not found' }));
-
+// app.use('/', (_, res) => res.status(404).send({ message: 'Page not found' }));
+app.use('/', (_, __) => { throw new NotFoundError('Page not found'); });
 app.use(errors());
 
 app.use((err, _req, res, next) => {
